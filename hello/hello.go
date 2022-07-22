@@ -3,13 +3,13 @@ package main
 import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/gauntface/focus-api/utils/jsonresponse"
 )
 
 func handler() (events.APIGatewayProxyResponse, error) {
-	return jsonresponse.Data(response{
-		Message: "hello world",
-	}), nil
+	return events.APIGatewayProxyResponse{
+		Body:       "Hello world",
+		StatusCode: 200,
+	}, nil
 }
 
 func main() {
