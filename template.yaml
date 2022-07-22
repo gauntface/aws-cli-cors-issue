@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  GatewayCorsOrigins:
+    Type: CommaDelimitedList
+    Default: []
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello/
+      Handler: hello
+      Runtime: go1.x
+      Events:
+        HelloWorld:
+          Type: HttpApi
+          Properties:
+            ApiId: ApiGatewayApi
+            Path: /hello
+            Method: GET
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods:
+          - OPTIONS
+          - GET
+          - POST
+        AllowOrigins: !Ref GatewayCorsOrigins
+        AllowHeaders:
+          - Authorization
